@@ -27,11 +27,13 @@
     border: 2px solid black;
 }
 #display-container{
+    display: flex;
+    flex-direction: column-reverse;
     width: 400px;
     height: 160px;
 }
-#zero{
-    flex-grow: 2;
+#display-para{
+    text-align: right;
 }
 .btn{
     width: 100px;
