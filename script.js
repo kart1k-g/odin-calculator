@@ -19,7 +19,6 @@ function createDisplay(){
 
     const displayPara=document.createElement("p");
     displayPara.id="display-para";
-    // displayPara.textContent="987654321098765432109876543210";
 
     innerDisplay.appendChild(displayPara);
     displayContainer.appendChild(innerDisplay);
@@ -63,6 +62,14 @@ function createBtns(){
     return btnContainer;
 }
 
+function limitAndDisplay(expression){
+    const displayPara=document.querySelector("#display-para");
+    if(expression.length>charDisplayLimit){
+        expression=expression.slice(-charDisplayLimit);
+    }
+    displayPara.textContent=expression;
+}
+
 function clearDisplay(){
     document.querySelector("#display-para").textContent="";
 }
@@ -85,18 +92,17 @@ function handleOperand(btnLabel){
         clearDisplay();
         toClearDisplay=false;
     }
-    const displayPara=document.querySelector("#display-para");
-    let expression=displayPara.textContent;
+    let expression=document.querySelector("#display-para").textContent;
     if(expression==="0")
         expression="";
-    displayPara.textContent=expression+btnLabel;
+    limitAndDisplay(expression+btnLabel);
 }
 
 function handleFunction(btnLabel){
     const displayPara=document.querySelector("#display-para");
     let expression=displayPara.textContent;
     if(btnLabel==="AC"){
-        initialiseVariables();
+        resetVariables();
         clearDisplay();
     }else if(btnLabel==="Del"){
         displayPara.textContent=expression.substring(0, expression.length-1);
@@ -109,10 +115,10 @@ function handleFunction(btnLabel){
             if(expression==="")
                 expression="0";
 
-            displayPara.textContent=expression+".";
+            limitAndDisplay(expression+".");
         }
     }else{
-        displayPara.textContent=Number(expression)*-1;
+        limitAndDisplay(Number(expression)*-1);
     }
 }
 
@@ -151,8 +157,7 @@ function handleEquals(){
 
 function handleEvaluation(){
     const result=evalExp();
-    const displayPara=document.querySelector("#display-para");
-    displayPara.textContent=result;
+    limitAndDisplay(result);
 
     operand1=result;
     operand2=null;
@@ -170,7 +175,7 @@ function evalExp(){
     return NaN;
 }
 
-function initialiseVariables(){
+function resetVariables(){
     operand1=null;
     operand2=null;
     operator=null;
@@ -178,7 +183,9 @@ function initialiseVariables(){
 }
 
 function initialise(){
-    console.log("Hia");
+    charDisplayLimit=23;
+    resetVariables();
+
     const topContainer=document.querySelector("#top-container");
     const calculator=createCalculator();
     topContainer.appendChild(calculator);
@@ -187,6 +194,7 @@ function initialise(){
 let operand1,
     operand2,
     operator,
-    toClearDisplay;
+    toClearDisplay,
+    charDisplayLimit;
 
 window.addEventListener("load", initialise);
