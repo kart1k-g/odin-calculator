@@ -19,6 +19,7 @@ function createDisplay(){
 
     const displayPara=document.createElement("p");
     displayPara.id="display-para";
+    displayPara.classList.add("calc-font");
 
     innerDisplay.appendChild(displayPara);
     displayContainer.appendChild(innerDisplay);
@@ -37,8 +38,8 @@ function createBtns(){
     ["one", "two", "three", "add"],    
     ["zero", "point", "equals"]];
 
-    const btnContainer=document.createElement("div");
-    btnContainer.id="btn-container";
+    const btnsContainer=document.createElement("div");
+    btnsContainer.id="btns-container";
 
     btnLabels.forEach((btnRow, row)=>{
         const rowContainer=document.createElement("div");
@@ -46,20 +47,26 @@ function createBtns(){
         rowContainer.classList.add("row-container");
     
         btnRow.forEach((btnLabel, col)=>{
+            const container=document.createElement("div");
+            container.id=`${btnIDs[row][col]}-btn-container`;
+            container.classList.add("individual-btn-container");
+
             const btn=document.createElement("button");
             btn.id=btnIDs[row][col];
             btn.classList.add("btn");
+            btn.classList.add("calc-font");
     
             btn.textContent=btnLabel;
             
             btn.addEventListener("click", handleClick);
 
-            rowContainer.appendChild(btn);
+            container.appendChild(btn);
+            rowContainer.appendChild(container);
         });
     
-        btnContainer.appendChild(rowContainer);
+        btnsContainer.appendChild(rowContainer);
     });
-    return btnContainer;
+    return btnsContainer;
 }
 
 function limitAndDisplay(expression){
@@ -183,7 +190,7 @@ function resetVariables(){
 }
 
 function initialise(){
-    charDisplayLimit=23;
+    charDisplayLimit=15;
     resetVariables();
 
     const topContainer=document.querySelector("#top-container");
